@@ -1,0 +1,99 @@
+Linux command line cheatsheet: https://www.guru99.com/linux-commands-cheat-sheet.html#1
+CLI -option
+
+可以用tab键 补全CLI
+
+The most popular Linux CLI used at work.
+
+1. 	ls: 		List the directory (folder) system. blue is folder and white is file
+	ls [path]
+	ls /: 	root directory
+	ls -l = ll
+	
+2. 	pwd: current Working directory. (Shows absolute path)
+	(e.g. /root) 
+	In Linux, absolute path begins with "/".  
+
+3. 	cd [pathname]	change directory (folder) in the file system.
+	pathname can be absolute or relative path
+	
+	cd /
+	cd /root
+	
+	.. 当前路径的上级路径
+
+	cd .. :	Move one level up (one folder) in the file system.
+
+	cd ./root/  ==  cd root		return to home directory
+
+4.	ctrl + c: cancel
+
+5.	ctrl + insert: copy
+
+6.	shift + insert: paste
+	
+	setup of shortcuts in Tools menu
+
+7.	touch [option]... file:		make a new empty file
+	
+	cat:	[option][file]:		show content of a file
+
+	echo:	print out content in terminal or write into a file
+
+
+8.	ctrl + l: clear the terminal 
+
+9. 	mkdir	Creates a new directory.
+	rm		remove
+
+
+	In terminal, type "yum install tree". yum is a package manager, like an App store. 
+	URL: https://access.redhat.com/solutions/9934
+
+	tree 	show the structure of directory
+	
+	E.G.: 
+	[root@VM-12-6-centos ~]# tree
+	.
+	|-- java102
+	|   |-- ccc
+	|   `-- ddd
+	|-- java102.txt
+	`-- javaFile
+    		|-- a
+    		|   |-- 111
+    		|   |-- 222
+    		|   `-- 333
+    		|-- b
+    		|   |-- 444
+    		|   `-- 555
+    		|-- c
+    		`-- d
+	
+	rm: it can delete files and directories. 
+	- delete a file
+	E.G.: 	[root@VM-12-6-centos ~]# rm test.txt
+			rm: remove regular empty file ‘test.txt’? y
+
+	- delete a directory: -r means recursively delete files, because a directory can have files and sub-directories 
+	E.G.:	[root@VM-12-6-centos javaFile]# rm -r d
+			rm: remove directory ‘d’? y
+
+			[root@VM-12-6-centos javaFile]# rm -rf ccc/
+			
+
+			delete all the files, including system files. Very dangerous CMD line
+			rm -rf / 
+			
+			the following CLI can also lead to the above CLI result:
+			1. 	rm -rf / tmp/abc.txt
+			  	rm will delete two directories:	/ and ./tmp/abc.txt
+		
+			2.	Linux shell script:
+				DIR=abc.txt
+				... ... other code
+				rm -rf /${DIR} 	万一执行到这个代码的时候，DIR因为一些原因，没有被定义。那么此处不会报错，而是把DIR是为空字符串
+								仍然会生成 rm -rf / 这样的命令！！
+
+
+
