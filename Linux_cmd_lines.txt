@@ -159,11 +159,277 @@ The most popular Linux CLI used at work.
 	|   `-- 555
 	`-- c
 
+	8 directories, 2 files
+
+	
+	mv 直接就能移动目录/文件
+
+cp 直接只能copy file，如果需要copy目录，就得加上 -r 参数的递归进行。 e.g. cp - r a/ b/
+	
+[root@VM-12-6-centos javaFile]# tree .
+.
+|-- 1105.txt
+|-- a
+|   |-- 111
+|   |-- 222
+|   `-- 333
+|-- b
+|   |-- 1105.txt
+|   |-- 444
+|   `-- 555
+`-- c
+
 8 directories, 2 files
+[root@VM-12-6-centos javaFile]# cp -r a/ b/
+[root@VM-12-6-centos javaFile]# tree .
+.
+|-- 1105.txt
+|-- a
+|   |-- 111
+|   |-- 222
+|   `-- 333
+|-- b
+|   |-- 1105.txt
+|   |-- 444
+|   |-- 555
+|   `-- a
+|       |-- 111
+|       |-- 222
+|       `-- 333
+`-- c
+
+12 directories, 2 files
+[root@VM-12-6-centos javaFile]# 
+
+mv 还可以 rename a file
+[root@VM-12-6-centos javaFile]# mv a/ renamed_file
+[root@VM-12-6-centos javaFile]# tree .
+.
+|-- 1105.txt
+|-- b
+|   |-- 1105.txt
+|   |-- 444
+|   |-- 555
+|   `-- a
+|       |-- 111
+|       |-- 222
+|       `-- 333
+|-- c
+`-- renamed_file				// filename a is changed into renamed_file
+    |-- 111
+    |-- 222
+    `-- 333
+
+mv操作，本质上是在修改文件的名字/路径。这个改动是非常轻量，快速的。
+cp操作，本质上需要copy大量的数据，所以copy过程是非常消耗时间的，尤其是文件很大的情况下。
+
+hard drive: writing speed is 200MB/s. It takes 1 minute to write a 10G file.
 
 
+11.	man: shows manual
+	e.g. man ls
+	use q to quit
+
+12.	less	read the content of file. (内置了翻页功能,上下键的光标)
+	优势在于大文件能够秒开，因为是懒加载（只加载当前屏幕的内容）。尤其是日志，以后在开发中，经常需要查看服务器的日志。
+
+	e.g.
+	cd /etc				//	find a larger file in etc directory
+						// 	find a file called services
+	
+	Vim: a text editor	.
+	Vim is a screen-based text editor program.
+
+	1. 使用 vim 创建/打开 文件. 文件存在，则是直接打开。文件不存在，那就新建。
+	   e.g. vim fileName.txt 
+
+	2. 使用 vim 编辑文件内容
+	   vim 为了提升编辑效率，引入了“模式” 和大量的快捷键
+	   
+	   当使用 vim 打开文件后，此时默认进入的“普通模式”（normal mode），普通模式下，键盘按键不是表示编辑框输入的内容，而是表示特殊含义的快捷键
+	   要想真的能够编辑，就需要先进入到 “插入模式” （insert mode）,键盘按键才是输入内容	   
+	   
+	   在 vim 中，使用 小写字母 i 来从普通模式进入插入模式。按 键盘 i 就可以。左下角就会显示 “-- insert --”
+
+	3. 使用 vim 进行保存退出
+	   不能按 ctrl + s 来保存。（ctrl + s 在 vim 中不是保存，同时 ctrl + s 是 xshell 的快捷键，功能是冻结屏幕）。
+	   xshell有这个功能，是因为服务器，打印日志，打得太快，来不及看。
+	      如果真的按了 ctrl + s, 怎么解除？按 ctrl + q 就能够解除冻结。
+	   
+	   
+	   1）先从插入模式回到普通模式，按esc~
+	   2）输入 “:wq” 来保存编辑好的文档，光标出现在左下角。
+		  w: write
+		 q: quit
+
+		 文件没变，:q 是能够直接退出。
+		  如果文件改变了，:q会报错，不会退出
+
+		 :q! 才是强制退出，不保存
+
+		 :x 效果和 :wq 是一样的
+
+		vim自带的教程，来自学。cmd line: vimtutor
+		IDEA / VSCode 等主流编辑器，都自带了 vim 插件，都可以使用 vim 的快捷键
+
+13. 		grep
+		
+
+14.		ps
+
+15.		netstat
+
+16.		permissions in Linux
+		最前面的字母/字符，- 表示普通文件，d 表示目录文件，和权限无关，是文件类型。
+		后面是 9 个英文字母，分成三个三个一组
+		r: read
+		w: write or modify the file's contents
+		x: execute the file if the file is a program（可执行的意思是，这个文件，能不能作为命令一样，来执行）
+		-: if any of the "rwx" is replaced by a '-', then that permission has been revoked
+		
+		rw-: read, write, permission is revoked
+		rwx: read, write and execute
+				
+
+		rwx   		r-x 				r-x
+		文件拥有者		文件拥有者的		其他用户的权限
+		的权限，可读	同组用户的权限		可读不可写可执行
+		可写，可执行	可读不可写可执行
+
+		三组角色的含义，拿房产证来举例：
+		买房得房本/产证。
+		rw
+		房本的名字：是汤老师，那么他房子的拥有者。打开房子看一下，那就是“读”操作，装修房子买家具是“写”操作，
+		房本上写了汤老师的夫人。她也是房子的拥有者。一样的权限。
+
+		r
+		他俩的孩子小汤，名字不在房本上。但他可以住在房子里，因为是家人，所以是同组用户。可以打开房子看，是“读”操作，但不可以丢沙发，是
+		“写“操作。
+
+		-
+		路人甲：不认识的陌生人，不能进入。那就没有”读“的权限。
 
 
+		root 管理员用户，不遵守上述规则。
 
+		chmod 命令，可以针对上述权限进行灵活的设置
+
+17. 	核心部分：
+	在 Linux 系统上，搭建 Java 运行环境，并且能够部署 Java Web 程序。
+	关于环境搭建，就需要在 Linux 上安装一些必要的程序
+	1. JDK
+	2. Tomcat	
+	3. MySQL
+	
+	注意：yum install 操作必须有管理员权限(root) 才能安装
+	su 命令，即可切换到 root 用户。需要输入 root 用户的密码。
+
+	1. 
+	JDK 的安装：只需要掌握最简单的方法。基于 yum 来进行安装即可。
+	yum: similar to app store.
+	Yum is a command-line package-management utility for computers running the Linux operating system.
+	
+	yum list:这个命令可能会卡死机器，会显示服务器上所有的软件包
+	
+	yum list | grep jdk
+	
+	grep: 命令的功能是进行字符串的过滤。| 叫做管道，功能是把前一个命令的输出，作为后一个命令的输入（像一根管，把两个命令连接起来。）
+
+	yum list | grep jdk: yum list会输出很多结果，有了 | 管道之后，就不会输出到显示器上，而是输入给了grep，筛选后，找到 包含jdk
+	这三个字母的对应文本行。会显示很多 java 的版本。1.8.0， 11等等
+		
+	找这个 jdk 版本的。java-1.8.0-openjdk-devel.x86_64          1:1.8.0.352.b08-2.el7_9       updates
+	devel: 开发工具包，也就是 JDK，里面的内容最全
+	x86_64,这个软件包适用的 CPU 是64位的 x86 的CPU（现在服务器用的 CPU 主要都是 x86 64位的）
+	
+	x86 是最主流的一种 CPU 的架构。（描述了 CPU 大概是啥样的规格）
+
+	PC，服务器都是以 x86 为主
+	
+	arm 也是一个比较常见的 CPU 架构，一般是手机/嵌入式设备（算力不如 x86，但是能耗低）	
+		
+	mips 现在都比较少
+
+	需要执行的命令：yum install java-1.8.0-openjdk-devel.x86_64
+
+	此处 OpenJDK 和 之前学的 Java 用的 JDK 还不是一个。之前 windows 上安装的 JDK 是 Oracle 官方的 JDK.
+	OpenJDK 是开源组织开发的另外一个 JDK，但是都用的相同的 JVM Hotspot。（所以差别比较小，装Oracle JDK比较麻烦）
+	
+	After installation, use "javac" to verify.
+	 
+	2. 
+	安装Tomcat
+	yum list | grep tomcat
+	版本比较老。课堂上用的是 8.5 系列的。Tomcat 和 JDK 和 Servlet 版本都匹配才行。
+	可以通过官网来安装。
+	下载 tomcat 官网上的安装包。需要传到 Linux 的服务器上面。直接把安装包，拖拽到 linux 服务器的目标目录(javaFile)里面。
+	但是拖拽上传依赖 rz 命令。
+	需要通过 yum install lrzsz 来安装依赖的命令，才能上传。
+
+	rz 把 windows 上的文件传给 Linux 服务器
+	sz 把 Linux 上的文件传给 windows
+	
+	需要将 zip 解压缩，命令为：unzip apache-tomcat-8.5.83.zip 
+	如果找不到unzip, 就用 yum install unzip 即可。
+
+	cd apache-tomcat-8.5.83/ 到解压缩后的文件夹里面。里面的目录内容，跟windows上面装的 tomcat 是一样的。因为是下载的是同一个压缩包。
+	
+	cd bin/
+	ll
+	to find
+	startup.bat  		for windows 	启动 tomcat
+	startup.sh		for Linux		启动 tomcat
+
+	首次使用，需要献给所有的 .sh 文件设置 可执行的权限。只需要在首次使用的时候，设置一次即可。
+	先 cd 到 bin 目录下，然后执行下列命令.命令的意思是，给目录中所有的 .sh 后缀的文件，都加上可执行权限。
+	chmod +x *.sh
+	
+	设置以后，.sh后缀结尾的文件，都变成绿色了。绿色就表示可执行了。
+
+	sh startup.sh 这个命令就可以启动 tomcat
+
+	总结:
+	在 Linux 配置 Tomcat 会比 Windows 步骤多。以下1-4步骤，是首次使用会设置的。安装好后，只需要第 5 步。
+	1. 先在官网上 下载 .zip 包
+	2. 把 zip 传到 Linux 上，直接通过 xshell 拖过去，可能需要安装 lrzsz
+	3. 使用 unzip 命令解压缩，可能需要安装 unzip
+	4. 切换到 bin 目录中，给所有的 .sh加上可执行权限。 chmod +x *.sh
+	5. sh startup.sh 启动 tomcat
+	
+	如何验证 tomcat 在正常工作。
+	1.	查看 tomcat 进程. ps 命令，相当于Linux 上的task manager, 会打印出当前主机的所有进程。
+		grep tomcat: 按照 tomcat 关键字来进行匹配
+		ps aux | grep tomcat
+		
+	2.	查看 tomcat 的默认端口号
+		默认是 8080，看一下 8080 是否被某个进程绑定了
+
+		netstat -anp | grep 8080
+
+		[root@VM-12-6-centos bin]# netstat -anp | grep 8080
+		tcp6       0      0 :::8080                 :::*                    LISTEN      22940/java
+		
+		如果端口号冲突导致启动失败，可以改端口号
+		找到 conf/ 目录 里面的 server.xml文件，改端口号就可以。
+		
+		一个主机上，一个端口，只能被一个进程绑定。
+		课上 8080 和 8005 两个端口都被别的进程占用了，所有需要手动去 xml 文件里，改一下这两个端口。
+	
+	3.	还可以验证一下，看能否访问 tomcat 的欢迎页面
+		如果可以，那就是启动成功。
+		(xshell连接的服务器)服务器的外网ip:8080
+
+		43.142.92.67:8080	 
+		要保证 服务器是可以访问的，需要开启 防火墙/安全组
+
+		云服务器厂商，为了保护服务器不受黑客攻击，绝大部分端口，默认情况下，无法直接通过外网来访问。
+		后台配置一下。
+	
+	
+	
+		
+	
+
+		
 
 
