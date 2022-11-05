@@ -94,6 +94,76 @@ The most popular Linux CLI used at work.
 				... ... other code
 				rm -rf /${DIR} 	万一执行到这个代码的时候，DIR因为一些原因，没有被定义。那么此处不会报错，而是把DIR是为空字符串
 								仍然会生成 rm -rf / 这样的命令！！
+	
+10.	mv [targeted file/directory] destinated directory 
+ 
+
+	[root@VM-12-6-centos javaFile]# touch 1105.txt
+	[root@VM-12-6-centos javaFile]# echo 'helloo' > 1105.txt
+
+	[root@VM-12-6-centos javaFile]# ll
+	total 16
+	-rw-r--r-- 1 root root    7 Nov  5 22:02 1105.txt
+	drwxr-xr-x 5 root root 4096 Nov  5 00:43 a
+	drwxr-xr-x 4 root root 4096 Nov  5 00:44 b
+	drwxr-xr-x 2 root root 4096 Nov  5 00:43 c
+	[root@VM-12-6-centos javaFile]# mv 1105.txt a/
+	
+	[root@VM-12-6-centos javaFile]# cd a
+	[root@VM-12-6-centos a]# ll
+	total 16
+	-rw-r--r-- 1 root root    7 Nov  5 22:02 1105.txt
+	drwxr-xr-x 2 root root 4096 Nov  5 00:43 111
+	drwxr-xr-x 2 root root 4096 Nov  5 00:43 222
+	drwxr-xr-x 2 root root 4096 Nov  5 00:43 333
+
+	[root@VM-12-6-centos javaFile]# tree .
+	.
+	|-- a
+	|   |-- 1105.txt
+	|   |-- 111
+	|   |-- 222
+	|   `-- 333
+	|-- b
+	|   |-- 444
+	|   `-- 555
+	`-- c
+
+	[root@VM-12-6-centos javaFile]# mv a/1105.txt ./
+	[root@VM-12-6-centos javaFile]# tree .
+	.
+	|-- 1105.txt
+	|-- a
+	|   |-- 111
+	|   |-- 222
+	|   `-- 333
+	|-- b
+	|   |-- 444
+	|   `-- 555
+	`-- c
+
+	-------------------
+	cp e.g. copy file name 1105.txt to folder b
+
+	[root@VM-12-6-centos javaFile]# cp 1105.txt b/
+	[root@VM-12-6-centos javaFile]# tree .
+	.
+	|-- 1105.txt
+	|-- a
+	|   |-- 111
+	|   |-- 222
+	|   `-- 333
+	|-- b
+	|   |-- 1105.txt
+	|   |-- 444
+	|   `-- 555
+	`-- c
+
+8 directories, 2 files
+
+
+
+
 
 
 
